@@ -53,7 +53,7 @@ services:
     # version control for nifi flows
   registry:
     hostname: nifi-registry
-    container_name: registry_container_persistent
+    container_name: nifi-registry
     image: apache/nifi-registry
     restart: on-failure
     ports:
@@ -68,8 +68,8 @@ services:
     # data extraction, transformation and load service
     nifi:
       hostname: devnifi
-      container_name: nifi_container_persistent
-      image: apache/nifi  
+      container_name: devnifi
+      image: apache/nifi 
       restart: on-failure
       ports:
         - '8081:8081'
