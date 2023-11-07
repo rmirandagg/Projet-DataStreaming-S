@@ -68,7 +68,7 @@ services:
     # data extraction, transformation and load service
   nifi:
     hostname: devnifi
-    container_name: devnifi
+    container_name: nifi
     image: apache/nifi 
     restart: on-failure
     ports:
