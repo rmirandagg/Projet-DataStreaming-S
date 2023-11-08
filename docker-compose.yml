@@ -21,6 +21,8 @@ services:
       - KAFKA_INTER_BROKER_LISTENER_NAME=EXTERNALPLAINTEXT
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      - KAFKA_BROKER_ID: 1
     depends_on:
       - zookeeper
   postgres:
