@@ -1,3 +1,4 @@
+
 version: '3.5'
 
 services:
@@ -47,10 +48,16 @@ services:
       OFFSET_STORAGE_TOPIC: my-connect-offsets
       BOOTSTRAP_SERVERS: kafka:9092
       ADVERTISED_HOST_NAME: debezium
+
     ports:
       - "8083:8083"
+    links:
+      - zookeeper
+      - postgres      
     depends_on:
       - kafka
+      - zookeeper
+      - postgres    
 
     # version control for nifi flows
   registry:
@@ -62,9 +69,7 @@ services:
       - "18080:18080"
     environment:
       - LOG_LEVEL=INFO
-    #  - NIFI_REGISTRY_DB_DIR=/opt/nifi-registry/nifi-registry-current/database
-    #  - NIFI_REGISTRY_FLOW_PROVIDER=file
-    #  - NIFI_REGISTRY_FLOW_STORAGE_DIR=/opt/nifi-registry/nifi-registry-current/flow_storage
+   
 
 
     # data extraction, transformation and load service
@@ -77,11 +82,7 @@ services:
       - '8081:8081'
     environment:
       - NIFI_WEB_HTTP_PORT=8081
-    #  - NIFI_CLUSTER_IS_NODE=true
-    #  - NIFI_CLUSTER_NODE_PROTOCOL_PORT=8082
-    #  #- NIFI_ZK_CONNECT_STRING=myzookeeper:2181
-    #  - NIFI_ELECTION_MAX_WAIT=30 sec
-    #  - NIFI_SENSITIVE_PROPS_KEY='12345678901234567890A'
+ 
 
     
       
