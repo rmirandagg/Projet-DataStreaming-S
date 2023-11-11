@@ -2,7 +2,7 @@ from kafka import KafkaConsumer
 from time import sleep
 from json import dumps,loads
 # from s3fs import S3FileSystem
-import boto3
+# import boto3
 import json
 from botocore.exceptions import NoCredentialsError
 import toml #library to load my configuration files
