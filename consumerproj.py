@@ -1,7 +1,7 @@
 from kafka import KafkaConsumer
 from time import sleep
 from json import dumps,loads
-from s3fs import S3FileSystem
+# from s3fs import S3FileSystem
 import boto3
 import json
 from botocore.exceptions import NoCredentialsError
