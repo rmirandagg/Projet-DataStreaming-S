@@ -35,7 +35,7 @@ consumer = KafkaConsumer(
 fields_sel = ['timestamp', 'open', 'low', 'close','volume','high', 'symbol']
 # Iterate through the elements in consumer for count, i in enumerate(consumer):
 for count,msg in enumerate(consumer):
-    try:
+    # try:
 
         # Generate file path in S3
         key = "bucketkafkatest/amzn_stock_kafka_test{}.json".format(count)
@@ -50,7 +50,7 @@ for count,msg in enumerate(consumer):
         s3_client.put_object(Bucket="bucketkafkatest" ,Key = key, Body=json_data)
 
         print(f"File {key} successfully stored in S3")
-
+"""
     except NoCredentialsError:
 
         print("No valid credentials will be found to access S3.")
@@ -63,6 +63,7 @@ for count,msg in enumerate(consumer):
     finally:
         # Cierra el consumidor
         consumer.close()
+"""
 
 """
 # Consume mensajes
