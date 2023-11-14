@@ -12,7 +12,7 @@ from datetime import datetime
 def convert_date_format(payload):
     # Reemplaza 'your_date_field' con el nombre real de tu campo de fecha
     if 'time' in payload:
-        payload['time'] = datetime.strptime(payload['your_date_field'], '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%Y-%m-%d %H:%M:%S')
+        payload['time'] = datetime.strptime(payload['time'], '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%Y-%m-%d %H:%M:%S')
     return payload
 
 
@@ -51,9 +51,7 @@ for count,msg in enumerate(consumer):
         # Convert Python object to JSON format
         # Selecciona solo los campos de interés
         payload = msg.value 
-        print(payload)
         payload = convert_date_format(payload)
-        print(payload)
         fields_sel = {campo: payload['payload']['after'][campo] for campo in fields_sel if campo in payload['payload']['after']}
         json_data =  json.dumps(fields_sel)
 
