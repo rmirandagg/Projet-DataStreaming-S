@@ -52,7 +52,7 @@ for count,msg in enumerate(consumer):
         # Convert Python object to JSON format
         # Selecciona solo los campos de interés
         payload = msg.value 
-        print(payload['time'])
+        print(payload['payload']["time"])
         payload = convert_date_format(payload)
         fields_sel = {campo: payload['payload']['after'][campo] for campo in fields_sel if campo in payload['payload']['after']}
         json_data =  json.dumps(fields_sel)
