@@ -7,7 +7,6 @@ import json
 from botocore.exceptions import NoCredentialsError
 import toml #library to load my configuration files
 from datetime import datetime
-from psycopg2 import connect
 
 
 def convert_date_format(payload):
