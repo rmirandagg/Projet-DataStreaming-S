@@ -6,6 +6,14 @@ import boto3
 import json
 from botocore.exceptions import NoCredentialsError
 import toml #library to load my configuration files
+from datetime import datetime
+
+
+def convert_date_format(payload):
+    # Reemplaza 'your_date_field' con el nombre real de tu campo de fecha
+    if 'time' in payload:
+        payload['time'] = datetime.strptime(payload['your_date_field'], '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%Y-%m-%d %H:%M:%S')
+    return payload
 
 
 # Configure AWS credentials
@@ -32,7 +40,7 @@ consumer = KafkaConsumer(
 )
 
 # Fields
-fields_sel = ['timestamp', 'open', 'low', 'close','volume','high', 'symbol']
+fields_sel = ['record_id','time', 'open', 'low', 'close','volume','high', 'symbol','event_time']
 # Iterate through the elements in consumer for count, i in enumerate(consumer):
 for count,msg in enumerate(consumer):
     # try:
@@ -43,6 +51,7 @@ for count,msg in enumerate(consumer):
         # Convert Python object to JSON format
         # Selecciona solo los campos de interés
         payload = msg.value 
+        payload = convert_date_format(payload)
         fields_sel = {campo: payload['payload']['after'][campo] for campo in fields_sel if campo in payload['payload']['after']}
         json_data =  json.dumps(fields_sel)
 
@@ -65,22 +74,3 @@ for count,msg in enumerate(consumer):
         consumer.close()
 """
 
-"""
-# Consume mensajes
-try:
-    #for msg in consumer:
-    for count,msg in enumerate(consumer):
-        payload = msg.value
-
-        # Selecciona solo los campos de interés
-        fields_sel = {campo: payload['payload']['after'][campo] for campo in fields_sel if campo in payload['payload']['after']}
-
-        print('Nuevo mensaje: {}'.format(fields_sel))
-        
-        fields_sel = json.dumps(fields_sel)
-        print('formato json: {}'.format(fields_sel))
-        
-       # with s3.open("s3://kafka/amzn_stock_market_{}.json".format(count),'w') as file:
-       #      json.dump(msg.value, file ) # write in file json
-
-"""
