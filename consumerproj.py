@@ -7,6 +7,7 @@ import json
 from botocore.exceptions import NoCredentialsError
 import toml #library to load my configuration files
 from datetime import datetime
+from psycopg2 import connect
 
 
 def convert_date_format(payload):
@@ -14,6 +15,8 @@ def convert_date_format(payload):
     if 'time' in payload:
         #payload['time'] = datetime.strptime(str(payload['time']), '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%Y-%m-%d %H:%M:%S')
         print("entro")
+        python_datetime = datetime.utcfromtimestamp(debezium_timestamp.seconds() + debezium_timestamp.nanos() / 1e9)
+        print(python_datetime)
     return payload
 
 
