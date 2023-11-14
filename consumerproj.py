@@ -14,8 +14,13 @@ def convert_date_format(payload):
     if 'time' in payload:
         #payload['time'] = datetime.strptime(str(payload['time']), '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%Y-%m-%d %H:%M:%S')
         print("entro")
-        python_datetime = datetime.utcfromtimestamp(debezium_timestamp.seconds() + debezium_timestamp.nanos() / 1e9)
+        timestamp_milliseconds = payload['time'] 
+        timestamp_seconds = timestamp_milliseconds / 1000.0
+
+        python_datetime = datetime.utcfromtimestamp(timestamp_seconds)
+
         print(python_datetime)
+       
     return payload
 
 
