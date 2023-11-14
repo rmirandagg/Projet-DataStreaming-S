@@ -5,22 +5,22 @@ from s3fs import S3FileSystem
 import boto3
 import json
 from botocore.exceptions import NoCredentialsError
-import toml #library to load my configuration files
+import toml 
 from datetime import datetime
 
 
 def convert_date_format(payload):
-    # Reemplaza 'your_date_field' con el nombre real de tu campo de fecha
+    
     if 'time' in payload:
-        #payload['time'] = datetime.strptime(str(payload['time']), '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%Y-%m-%d %H:%M:%S')
-        print("entro")
         timestamp_milliseconds = payload['time'] 
         timestamp_seconds = timestamp_milliseconds / 1000.0
+        payload['time'] = datetime.utcfromtimestamp(timestamp_seconds)
+        
+    if 'event_time' in payload:
+        timestamp_milliseconds = payload['event_time'] 
+        timestamp_seconds = timestamp_milliseconds / 1000.0
+        payload['event_time'] = datetime.utcfromtimestamp(timestamp_seconds)
 
-        python_datetime = datetime.utcfromtimestamp(timestamp_seconds)
-
-        print(python_datetime)
-       
     return payload
 
 
@@ -49,6 +49,7 @@ consumer = KafkaConsumer(
 
 # Fields
 fields_sel = ['record_id','time', 'open', 'low', 'close','volume','high', 'symbol','event_time']
+
 # Iterate through the elements in consumer for count, i in enumerate(consumer):
 for count,msg in enumerate(consumer):
     # try:
@@ -57,13 +58,10 @@ for count,msg in enumerate(consumer):
         key = "bucketkafkatest/amzn_stock_kafka_test{}.json".format(count)
 
         # Convert Python object to JSON format
-        # Selecciona solo los campos de interés
+
         payload = msg.value 
-        #print(payload['payload']['time'])
-        
         fields_sel = {campo: payload['payload']['after'][campo] for campo in fields_sel if campo in payload['payload']['after']}
         fields_sel = convert_date_format(fields_sel)
-        print(fields_sel)
         json_data =  json.dumps(fields_sel)
 
         #Upload JSON file to S3
