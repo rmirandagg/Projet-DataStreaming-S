@@ -13,7 +13,7 @@ def convert_date_format(payload):
     # Reemplaza 'your_date_field' con el nombre real de tu campo de fecha
     if 'time' in payload:
         payload['time'] = datetime.strptime(payload['time'], '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%Y-%m-%d %H:%M:%S')
-        print(payload['time'])
+        
     return payload
 
 
@@ -52,9 +52,11 @@ for count,msg in enumerate(consumer):
         # Convert Python object to JSON format
         # Selecciona solo los campos de interés
         payload = msg.value 
-        print(payload['payload']["time"])
-        payload = convert_date_format(payload)
+        #print(payload['payload']['time'])
+        
         fields_sel = {campo: payload['payload']['after'][campo] for campo in fields_sel if campo in payload['payload']['after']}
+        fields_sel = convert_date_format(fields_sel)
+        print(fields_sel)
         json_data =  json.dumps(fields_sel)
 
         #Upload JSON file to S3
