@@ -14,12 +14,14 @@ def convert_date_format(payload):
     if 'time' in payload:
         timestamp_milliseconds = payload['time'] 
         timestamp_seconds = timestamp_milliseconds / 1000.0
-        payload['time'] = datetime.utcfromtimestamp(timestamp_seconds)
+        timestamp_time = datetime.utcfromtimestamp(timestamp_seconds)
+        payload['time'] = timestamp_time.strftime('%d/%m/%Y %H:%M:%S')
         
     if 'event_time' in payload:
         timestamp_milliseconds = payload['event_time'] 
         timestamp_seconds = timestamp_milliseconds / 1000.0
-        payload['event_time'] = datetime.utcfromtimestamp(timestamp_seconds)
+        timestamp_time = datetime.utcfromtimestamp(timestamp_seconds)
+        payload['event_time'] =timestamp_time.strftime('%d/%m/%Y %H:%M:%S') 
 
     return payload
 
