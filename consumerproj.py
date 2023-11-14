@@ -13,6 +13,7 @@ def convert_date_format(payload):
     # Reemplaza 'your_date_field' con el nombre real de tu campo de fecha
     if 'time' in payload:
         payload['time'] = datetime.strptime(payload['time'], '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%Y-%m-%d %H:%M:%S')
+        print(payload['time'])
     return payload
 
 
