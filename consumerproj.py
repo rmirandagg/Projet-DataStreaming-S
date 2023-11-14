@@ -12,8 +12,8 @@ from datetime import datetime
 def convert_date_format(payload):
     # Reemplaza 'your_date_field' con el nombre real de tu campo de fecha
     if 'time' in payload:
-        payload['time'] = datetime.strptime(str(payload['time']), '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%Y-%m-%d %H:%M:%S')
-        
+        #payload['time'] = datetime.strptime(str(payload['time']), '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%Y-%m-%d %H:%M:%S')
+        print("entro")
     return payload
 
 
@@ -22,7 +22,7 @@ app_config = toml.load('config.toml') #loading aws configuration files
 access_key = app_config['s3']['keyid'] #getting access key id from config.toml file
 secret_access_key = app_config['s3']['keysecret'] #getting access key secrets from config.toml file
 
-
+payload= []
 # Configure  region of S3
 region = 'us-east-2'
 
